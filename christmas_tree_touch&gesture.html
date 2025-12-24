@@ -44,7 +44,11 @@
             transition: opacity 0.5s ease;
         }
         
-        .ui-hidden { opacity: 0 !important; pointer-events: none !important; }
+        .ui-hidden { 
+            opacity: 0 !important; 
+            pointer-events: none !important; 
+            visibility: hidden !important;
+        }
 
         /* Loading */
         #loader {
@@ -78,13 +82,45 @@
         }
         @media (min-width: 768px) { h1 { font-size: 56px; } }
 
+        /* Toggle Button */
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            color: #d4af37;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            pointer-events: auto;
+        }
+        .toggle-btn:hover {
+            background: rgba(212, 175, 55, 0.8);
+            color: #000;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+            transform: scale(1.1);
+        }
+        .toggle-btn:active {
+            transform: scale(0.95);
+        }
+
         /* Controls */
         .controls-wrapper {
             position: absolute; top: 100px; right: 20px;        
             pointer-events: auto;
             display: flex; flex-direction: column; align-items: flex-end;
             gap: 10px; z-index: 20;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
 /* <!--
   - @Project: Grand Luxury Tree - Christmas Edition (Touch & Gesture & Stats)
@@ -288,10 +324,15 @@
 
     <div id="canvas-container"></div>
 
+    <!-- Toggle Button - Đặt ngoài ui-layer để có thể click -->
+    <button id="toggle-controls-btn" class="toggle-btn" title="Show/Hide Controls">
+        ⚙️
+    </button>
+
     <div id="ui-layer">
-        <h1>Merry Christmas</h1>
+        <h1>Merry Christmas Bùi Thảo</h1>
         
-        <div class="controls-wrapper">
+        <div class="controls-wrapper ui-hidden">
             <div class="btn-group">
                 <div class="control-btn" id="cam-btn">📷 Enable Gesture</div>
                 <label class="control-btn">
@@ -909,6 +950,16 @@
             document.getElementById('file-input').addEventListener('change', handleImageUpload);
             document.getElementById('folder-input').addEventListener('change', handleImageUpload);
             camBtn.addEventListener('click', () => { initMediaPipe(); });
+            
+            // Toggle controls button
+            const toggleBtn = document.getElementById('toggle-controls-btn');
+            const controlsWrapper = document.querySelector('.controls-wrapper');
+            if (toggleBtn && controlsWrapper) {
+                toggleBtn.addEventListener('click', () => {
+                    controlsWrapper.classList.toggle('ui-hidden');
+                });
+            }
+            
             window.addEventListener('keydown', (e) => {
                 const key = e.key.toLowerCase();
                 if (key === 'h') {
